@@ -1,0 +1,12 @@
+Usage
+=====
+
+1) ruby email_check.rb <EMAIL TO CHECK>
+
+
+Notes
+=====
+
+1) Based on: https://github.com/skillnet/validates_email_with_smtp
+
+2) Not really ideal in production because those mail servers might block you
