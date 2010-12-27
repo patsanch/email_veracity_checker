@@ -8,7 +8,7 @@ class EmailCheck < Net::SMTP
 
     def self.rcpt_responses
       @@rcpt_responses ||=
-      {
+        {
         -1  => :fail,         # Validation failed (non-SMTP)
         250 => :valid,        # Requested mail action okay, completed
         251 => :dunno,        # User not local; will forward to <forward-path>
@@ -58,22 +58,22 @@ class EmailCheck < Net::SMTP
     end
   end
 
-  def self.run(addr, server = nil, decoy_from = nil)
+  #decoy_from = "development@einsteinindustries.com"
+  #domain = "einsteinindustries.com"
+  #call EmailCheck.run(email, decoy_from, domain, server = nil )
+  def self.run(addr, decoy_from, domain, server = nil)
     if addr.index('@').nil?
       ret = EmailCheckStatus.new(-1, error)
-      puts "[CHECK EMAIL EXISTS] email is #{addr} -> no email specified"
+      #puts "[CHECK EMAIL EXISTS] email is #{addr} -> no email specified"
       return ret
     end
-    
+
     server = get_mail_server(addr[(addr.index('@')+1)..-1]) if server.nil?
-    
-    decoy_from = "development@einsteinindustries.com"
-    domain = "einsteinindustries.com"
     ret = nil
-    
-    puts "[CHECK EMAIL EXISTS] email is #{addr}."
-    puts "[CHECK EMAIL EXISTS] addr is #{server}."
-    
+
+    #puts "[CHECK EMAIL EXISTS] email is #{addr}."
+    #puts "[CHECK EMAIL EXISTS] addr is #{server}."
+
     begin
       smtp = EmailCheck.new(server)
       smtp.set_debug_output $stderr
@@ -83,9 +83,9 @@ class EmailCheck < Net::SMTP
 
       if ret.class != String
         # ruby 1.8.7
-        puts "[CHECK EMAIL EXISTS] ret success is #{ret.success?}."
-        puts "[CHECK EMAIL EXISTS] ret message is #{ret.message}."
-        puts "[CHECK EMAIL EXISTS] ret status is #{ret.status}."
+        #puts "[CHECK EMAIL EXISTS] ret success is #{ret.success?}."
+        #puts "[CHECK EMAIL EXISTS] ret message is #{ret.message}."
+        #puts "[CHECK EMAIL EXISTS] ret status is #{ret.status}."
         ret = EmailCheckStatus.new(ret.message.to_s[0..2].to_i)
       else
         # ruby 1.8.5
@@ -93,15 +93,15 @@ class EmailCheck < Net::SMTP
       end
     rescue Net::SMTPAuthenticationError, Net::SMTPServerBusy, Net::SMTPSyntaxError, Net::SMTPFatalError, Net::SMTPUnknownError => error
       ret = EmailCheckStatus.new(error.to_s[0..2].to_i, error)
-      puts "[CHECK EMAIL EXISTS] ret1 is #{ret}, error is #{error.to_s[0..2]}."
+      #puts "[CHECK EMAIL EXISTS] ret1 is #{ret}, error is #{error.to_s[0..2]}."
     rescue IOError, TimeoutError, ArgumentError => error
       ret = EmailCheckStatus.new(-1, error)
-      puts "[CHECK EMAIL EXISTS] ret2 is #{ret}, error is #{error}."
+      #puts "[CHECK EMAIL EXISTS] ret2 is #{ret}, error is #{error}."
     rescue Exception => error
       ret = EmailCheckStatus.new(-1, error)
-      puts "[CHECK EMAIL EXISTS] ret3 is #{ret}, error is #{error}."
+      #puts "[CHECK EMAIL EXISTS] ret3 is #{ret}, error is #{error}."
     end
-    
+
     return ret
   end
 
@@ -123,13 +123,3 @@ class EmailCheck < Net::SMTP
     nil
   end
 end
-
-#=begin
-CHECK_THIS_EMAIL = ARGV[0]
-
-if CHECK_THIS_EMAIL.nil?
-  exit
-end
-
-puts EmailCheck.run(CHECK_THIS_EMAIL).valid?
-#=end

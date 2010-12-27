@@ -1,7 +1,15 @@
 Usage
 =====
 
-1) ruby email_check.rb <EMAIL TO CHECK>
+Add following entry in your config/environment.rb
+ 
+ config.gem 'email_veracity_checker', :lib => "email_check"
+
+How to use:
+
+ EmailCheck.run("kiran@joshsoftware.com").valid?
+ 
+ It's return true or false 
 
 
 Notes
