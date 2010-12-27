@@ -6,8 +6,13 @@ Add following entry in your config/environment.rb
  config.gem 'email_veracity_checker', :lib => "email_check"
 
 How to use:
+ #first param is user email address
+ #second sender address
+ #third param is domain address
+ 
+ #Note: It's not sending email, at the end point they quit connection.
 
- EmailCheck.run("kiran@joshsoftware.com").valid?
+ EmailCheck.run("kiran@joshsoftware.com","no-reply@joshsoftware.com","joshsoftware.com").valid?
  
  It's return true or false 
 
