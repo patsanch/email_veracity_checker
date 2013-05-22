@@ -22,7 +22,6 @@ class EmailCheck < Net::SMTP
         500 => :fail,         # Syntax error, command unrecognised
         501 => :invalid,      # Syntax error in parameters or arguments
         503 => :fail,         # Bad sequence of commands
-        550 => :fail,         # Unknown user
         521 => :invalid,      # <domain> does not accept mail [rfc1846]
         421 => :fail,         # <domain> Service not available, closing transmission channel
       }
@@ -108,7 +107,7 @@ class EmailCheck < Net::SMTP
   def check_mail_addr(domain, to_addr, decoy_from = nil)
     raise IOError, 'closed session' unless @socket
     raise ArgumentError, 'mail destination not given' if to_addr.empty?
-    helo domain
+#   helo domain
     mailfrom decoy_from
     rcptto to_addr
   end
