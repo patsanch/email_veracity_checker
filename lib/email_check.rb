@@ -108,7 +108,7 @@ class EmailCheck < Net::SMTP
   def check_mail_addr(domain, to_addr, decoy_from = nil)
     raise IOError, 'closed session' unless @socket
     raise ArgumentError, 'mail destination not given' if to_addr.empty?
-    helo domain
+#   helo domain
     mailfrom decoy_from
     rcptto to_addr
   end
