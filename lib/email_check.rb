@@ -22,7 +22,6 @@ class EmailCheck < Net::SMTP
         500 => :fail,         # Syntax error, command unrecognised
         501 => :invalid,      # Syntax error in parameters or arguments
         503 => :fail,         # Bad sequence of commands
-        550 => :fail,         # Unknown user
         521 => :invalid,      # <domain> does not accept mail [rfc1846]
         421 => :fail,         # <domain> Service not available, closing transmission channel
       }
